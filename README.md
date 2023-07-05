@@ -21,7 +21,8 @@ If you're in a Linux or Mac environment, just run for initial setup:
 make build
 ```
 
-Also, install these VS Code extensions to keep the code well linted and formated:
+Also, install these VS Code extensions to keep the code well linted, formated
+and even with some static type checking:
 
 - Python (Microsoft)
 - Pylance (Microsoft)
