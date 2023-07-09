@@ -5,9 +5,9 @@ from kiki_delivery.application.restful.customers_dto import (
     CustomerPostDTO,
     CustomerPutDTO,
 )
-from kiki_delivery.domain.customer.customer_repository import AbcCustomerRepository
-from kiki_delivery.infrastructure.repositories.fake_repository import (
-    FakeGenericFullRepository,
+from kiki_delivery.domain.customer.customer_abc_repository import AbcCustomerRepository
+from kiki_delivery.infrastructure.repositories.customer_repository import (
+    CustomerRepository,
 )
 
 router = APIRouter(prefix="/customers", tags=["Customers"])
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/customers", tags=["Customers"])
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def post_customer(
     customer_dto: CustomerPostDTO,
-    customer_repo: AbcCustomerRepository = Depends(FakeGenericFullRepository),
+    customer_repo: AbcCustomerRepository = Depends(CustomerRepository),
 ):
     customer = customer_dto.to_entity()
     created = customer_repo.create(customer)
@@ -25,7 +25,7 @@ async def post_customer(
 
 @router.get("/")
 async def get_customers(
-    customer_repo: AbcCustomerRepository = Depends(FakeGenericFullRepository),
+    customer_repo: AbcCustomerRepository = Depends(CustomerRepository),
 ):
     return CustomersDTO.from_entities(customer_repo.list())
 
@@ -34,7 +34,7 @@ async def get_customers(
 async def get_customer(
     id: int,
     response: Response,
-    customer_repo: AbcCustomerRepository = Depends(FakeGenericFullRepository),
+    customer_repo: AbcCustomerRepository = Depends(CustomerRepository),
 ):
     customer = customer_repo.read(id)
     if not customer:
@@ -49,7 +49,7 @@ async def put_customer(
     id: int,
     response: Response,
     customer_dto: CustomerPutDTO,
-    customer_repo: AbcCustomerRepository = Depends(FakeGenericFullRepository),
+    customer_repo: AbcCustomerRepository = Depends(CustomerRepository),
 ):
     customer = customer_dto.to_entity()
 
@@ -64,7 +64,7 @@ async def put_customer(
 @router.delete("/{id}", status_code=status.HTTP_202_ACCEPTED)
 async def delete_customer(
     id: int,
-    customer_repo: AbcCustomerRepository = Depends(FakeGenericFullRepository),
+    customer_repo: AbcCustomerRepository = Depends(CustomerRepository),
 ):
     customer_repo.delete(id)
     return dict(id=id)

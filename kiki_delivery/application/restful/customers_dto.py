@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Self, List
 from dataclasses import dataclass, field
 from kiki_delivery.domain.customer.customer_entities import Customer
 from kiki_delivery.domain.customer.customer_value_objects import Email, Cpf
@@ -27,7 +27,7 @@ class CustomerPutDTO(CustomerPostDTO):
     email: str
     cpf: str
 
-    def to_entity(self):
+    def to_entity(self) -> Customer:
         return Customer(
             id=self.id,
             first_name=self.first_name,
@@ -46,7 +46,7 @@ class CustomerDTO(dto.RESTfulItemDTO[Customer]):
     cpf: str
 
     @classmethod
-    def from_entity(cls, customer: Customer):
+    def from_entity(cls, customer: Customer) -> Self:
         return cls(
             id=customer.id or -1,
             first_name=customer.first_name,

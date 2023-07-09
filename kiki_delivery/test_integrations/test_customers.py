@@ -1,17 +1,19 @@
 import unittest
+from sqlalchemy import text
 from fastapi.testclient import TestClient
 from kiki_delivery.application.web import app
-from kiki_delivery.infrastructure.repositories.fake_repository import (
-    FakeGenericFullRepository,
-)
-from kiki_delivery.domain.customer.customer_repository import AbcCustomerRepository
 from kiki_delivery.domain.customer.customer_entities import Customer
 from kiki_delivery.domain.customer.customer_value_objects import Email, Cpf
+from kiki_delivery.domain.customer.customer_abc_repository import AbcCustomerRepository
+from kiki_delivery.infrastructure.repositories.customer_repository import (
+    CustomerRepository,
+)
 
 
 class TestCustomers(unittest.TestCase):
     def setUp(self):
-        self.customer_repo = FakeGenericFullRepository[Customer]()
+        self.customer_repo = CustomerRepository()
+
         self.first_customer = self.customer_repo.create(
             Customer(
                 first_name="John",
@@ -29,8 +31,13 @@ class TestCustomers(unittest.TestCase):
             )
         )
 
-        app.dependency_overrides[FakeGenericFullRepository] = lambda: self.customer_repo
+        app.dependency_overrides[AbcCustomerRepository] = lambda: self.customer_repo
         self.client = TestClient(app)
+
+    def tearDown(self):
+        self.customer_repo.delete(self.first_customer.id)  # type: ignore
+        self.customer_repo.delete(self.second_customer.id)  # type: ignore
+        self.customer_repo._session.close()
 
     def test_post_customer(self):
         post_data = {
@@ -51,6 +58,8 @@ class TestCustomers(unittest.TestCase):
             "cpf": "123.123.123-12",
             "email": "marcell@teste.com",
         }
+
+        self.customer_repo.delete(created_id)
 
     def test_get_customers(self):
         response = self.client.get("/customers/")

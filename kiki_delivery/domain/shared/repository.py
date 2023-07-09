@@ -24,7 +24,7 @@ class AbcFullGenericRepository(Generic[T], abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def update(self, id: int, updating: T) -> T:
+    def update(self, id: int, updating: T) -> Optional[T]:
         raise NotImplementedError
 
     @abc.abstractmethod

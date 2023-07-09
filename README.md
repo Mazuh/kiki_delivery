@@ -44,6 +44,12 @@ Now install the dependencies of this virtual env:
 make install
 ```
 
+Run database migrations (hint: `createdb kiki_delivery`):
+
+```sh
+make migrate
+```
+
 And then start a development server:
 
 ```sh

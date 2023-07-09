@@ -1,4 +1,3 @@
-import abc
 import random
 from typing import TypeVar, Generic, List
 from kiki_delivery.domain.shared.repository import (
