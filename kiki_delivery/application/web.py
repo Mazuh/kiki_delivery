@@ -3,11 +3,12 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from kiki_delivery.domain.shared.exceptions import DomainValidatorException
 
-from .restful import customers_controller
+from kiki_delivery.application.restful import customers_controller, products_controller
 
 app = FastAPI(debug=True)
 
 app.include_router(customers_controller.router)
+app.include_router(products_controller.router)
 
 
 async def catch_exceptions_middleware(request: Request, call_next):

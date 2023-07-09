@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from .customer_value_objects import Email, Cpf
+from kiki_delivery.domain.customer.customer_value_objects import Email, Cpf
 
 
 @dataclass

@@ -1,8 +1,8 @@
 from typing import Self, List
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from kiki_delivery.application.restful.shared import dto
 from kiki_delivery.domain.customer.customer_entities import Customer
 from kiki_delivery.domain.customer.customer_value_objects import Email, Cpf
-from kiki_delivery.application.restful.shared import dto
 
 
 class CustomerPostDTO(dto.RESTfulInputDTO[Customer]):
