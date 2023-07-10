@@ -72,7 +72,51 @@ A few useful outputs:
 
 ## Architecture
 
-TODO.
+It's inspired by a mix of concepts from DDD, Clean and Hexagonal architecturing.
+
+Currently, there's no authentication nor authorization.
+
+Aggregate root domains are:
+- Customer ("cliente").
+- Order ("pedido").
+- Product ("product").
+
+The layers are:
+- Domain, having all the business rule agnostic to frameworks and storage,
+  all other layers depend of this layer but this layer doesn't depend of anything
+  else but itself.
+- Infrastructure, they implement what the domain logic defined as abstract
+  interfaces to persist the changes.
+- Application, as RESTful API controllers, they by default inject the standard
+  infrastructure but it's very agnostic to it, mostly focus on picking the domain
+  entities and making proper calls to it.
+
+Each domain sublayer has a driven ports module for defining things like
+the repositories APIs, the aggregated entities in another module and a few
+contextual value objects in one last module containing important data
+validation.
+
+The infrastructure sublayers contain an Alembic module for managing database
+changes, ORM modules for handling with SQL databases and repositories to
+implement the concrete versio of domain interfaces.
+
+And the application tries to organize itself in a RESTful design for
+more predictable and mostly idempotent state, so it can be very reusable
+and simple. Because of that, it might not be obvious, but the use cases can
+be achieved through:
+
+- Customer management by both user themselves at individual level and
+  system-wide level: all customers endpoints, it's a full CRUD.
+- Products management: supposed to be read by users and having writing
+  all operations for restaurant managers.
+- Searching products by category: GET products endpoint.
+- Adding chart: a specific endpoint for POST order items.
+- Checkout: individual POST and GET of orders but also an extra endpoint
+  to change the orders status to RECEIVED only if there are items added first.
+- Orders listing: almost full CRUD operations for the restaurant, and an
+  individual GET by id for customers query.
+
+The migration scripts include seed data for all of this described above.
 
 ## License
 

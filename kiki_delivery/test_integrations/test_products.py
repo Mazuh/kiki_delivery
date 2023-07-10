@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from kiki_delivery.application.web import app
 from kiki_delivery.domain.product.product_entities import Product
 from kiki_delivery.domain.product.product_value_objects import ProductCategory, Price
-from kiki_delivery.domain.product.product_abc_repository import AbcProductRepository
+from kiki_delivery.domain.product.product_driven_ports import AbcProductRepository
 from kiki_delivery.infrastructure.repositories.product_repository import (
     ProductRepository,
 )

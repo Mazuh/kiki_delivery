@@ -31,6 +31,14 @@ pyclean:
 requirements:
 	pip freeze > requirements.txt
 
-.PHONE: migrate_auto_generate
-migrate_auto_generate:
+.PHONE: migrate_autogen
+migrate_autogen:
 	alembic revision --autogenerate -m 'my new migration'
+
+.PHONE: migrate_up
+migrate_up:
+	alembic upgrade +1
+
+.PHONE: migrate_down
+migrate_down:
+	alembic downgrade -1

@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from kiki_delivery.application.web import app
 from kiki_delivery.domain.customer.customer_entities import Customer
 from kiki_delivery.domain.customer.customer_value_objects import Email, Cpf
-from kiki_delivery.domain.customer.customer_abc_repository import AbcCustomerRepository
+from kiki_delivery.domain.customer.customer_driven_ports import AbcCustomerRepository
 from kiki_delivery.infrastructure.repositories.customer_repository import (
     CustomerRepository,
 )

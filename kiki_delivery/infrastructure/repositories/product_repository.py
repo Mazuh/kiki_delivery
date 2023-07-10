@@ -1,5 +1,5 @@
 from typing import Optional, List
-from kiki_delivery.domain.product import AbcProductRepository, Product
+from kiki_delivery.domain.product import AbcProductRepository, Product, ProductCategory
 from kiki_delivery.infrastructure.shared.db_repository import AbcDatabaseRepository
 from kiki_delivery.infrastructure.orm.product_orm import ProductORM
 
@@ -18,8 +18,13 @@ class ProductRepository(AbcDatabaseRepository, AbcProductRepository):
         )
         return product_orm.to_entity() if product_orm else None
 
-    def list(self) -> List[Product]:
-        products_orm = self._session.query(ProductORM).all()
+    def list(self, category: Optional[ProductCategory] = None) -> List[Product]:
+        query = self._session.query(ProductORM)
+
+        if category:
+            query = query.filter(ProductORM.category == category.value)
+
+        products_orm = query.all()
         return [c.to_entity() for c in products_orm]
 
     def update(self, id: int, product: Product) -> Optional[Product]:

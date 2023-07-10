@@ -5,7 +5,7 @@ from kiki_delivery.application.restful.customers_dto import (
     CustomerPostDTO,
     CustomerPutDTO,
 )
-from kiki_delivery.domain.customer.customer_abc_repository import AbcCustomerRepository
+from kiki_delivery.domain.customer.customer_driven_ports import AbcCustomerRepository
 from kiki_delivery.infrastructure.repositories.customer_repository import (
     CustomerRepository,
 )

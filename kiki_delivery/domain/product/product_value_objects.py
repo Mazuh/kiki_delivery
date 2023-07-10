@@ -8,16 +8,17 @@ class ProductCategory:
     value: str
 
     def __post_init__(self):
-        if self.value not in PRODUCT_CATEGORIES_OPTIONS:
+        if self.value not in ProductCategory.get_options():
             raise DomainValidatorException("Unavailable product category.")
 
-
-PRODUCT_CATEGORIES_OPTIONS = (
-    "SNACK",
-    "SIDE",
-    "DRINK",
-    "DESSERT",
-)
+    @staticmethod
+    def get_options():
+        return (
+            "SNACK",
+            "SIDE",
+            "DRINK",
+            "DESSERT",
+        )
 
 
 @dataclass(init=False)

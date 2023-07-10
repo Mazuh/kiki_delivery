@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, Response, status
+from typing import Annotated
+from fastapi import APIRouter, Depends, Query, Response, status
 from kiki_delivery.application.restful.products_dto import (
     ProductDTO,
     ProductsDTO,
     ProductPostDTO,
     ProductPutDTO,
 )
-from kiki_delivery.domain.product.product_abc_repository import AbcProductRepository
+from kiki_delivery.domain.product import AbcProductRepository, ProductCategory
 from kiki_delivery.infrastructure.repositories.product_repository import (
     ProductRepository,
 )
@@ -26,8 +27,17 @@ async def post_product(
 @router.get("/")
 async def get_products(
     product_repo: AbcProductRepository = Depends(ProductRepository),
+    category: Annotated[str, Query()] = "",
 ):
-    return ProductsDTO.from_entities(product_repo.list())
+    products = product_repo.list(
+        category=ProductCategory(category) if category else None
+    )
+    return ProductsDTO.from_entities(products)
+
+
+@router.get("/categories")
+async def get_product_categories():
+    return ProductCategory.get_options()
 
 
 @router.get("/{id}")
