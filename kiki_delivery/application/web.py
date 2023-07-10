@@ -5,7 +5,7 @@ from kiki_delivery.domain.shared.exceptions import DomainValidatorException
 
 from kiki_delivery.application.restful import customers_controller, products_controller
 
-app = FastAPI(debug=True)
+app = FastAPI(debug=True, swagger_ui_parameters={"defaultModelsExpandDepth": -1})
 
 app.include_router(customers_controller.router)
 app.include_router(products_controller.router)
@@ -30,6 +30,6 @@ async def catch_exceptions_middleware(request: Request, call_next):
 app.middleware("http")(catch_exceptions_middleware)
 
 
-@app.get("/")
+@app.get("/ping")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "pong"}
