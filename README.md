@@ -4,11 +4,20 @@ Kiki's Delivery Service -- 魔女の宅急便
 
 ## Setting up
 
-### With Docker
+### With Docker containers
 
-TODO.
+Having at least Docker 24, run:
 
-### Alternative for local development
+```sh
+docker compose up
+```
+
+And access:
+http://localhost:8000/docs/
+
+That's enough for a local demo.
+
+### In host machine for local development
 
 Make sure you have installed:
 
