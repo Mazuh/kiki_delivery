@@ -6,9 +6,10 @@ Kiki's Delivery Service -- 魔女の宅急便
 
 ### With Docker containers
 
-Having at least Docker 24, run:
+Having at least Docker 24, run (containers with new volumes just to make sure):
 
 ```sh
+docker compose down --volumes
 docker compose up
 ```
 
