@@ -1,0 +1,6 @@
+global:
+  postgresql:
+    auth:
+      username: mazuh
+      password: devpass
+      database: kiki_delivery

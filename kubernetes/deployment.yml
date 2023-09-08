@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiki-delivery
+  labels:
+    app: kiki-delivery
+    role: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kiki-delivery
+      role: web
+  template:
+    metadata:
+      labels:
+        app: kiki-delivery
+        role: web
+    spec:
+      initContainers:
+        - name: migration
+          image: mazuhslyther/kiki_delivery-web:latest
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - configMapRef:
+                name: "kiki-delivery"
+
+      containers:
+        - name: kiki-delivery
+          image: mazuhslyther/kiki_delivery-web:latest
+          command:
+            [
+              "uvicorn",
+              "kiki_delivery.application.web:app",
+              "--reload",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8000",
+            ]
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: "kiki-delivery"
